@@ -1,4 +1,16 @@
-# projeto-bd-agregacao
+# Projeto BD - Agregação e Autorrelação
+
+## 📚 Descrição do Projeto
+
+Este projeto simula um sistema de gerenciamento de funcionários, projetos e equipamentos em uma empresa, aplicando conceitos de Banco de Dados Relacional, incluindo:
+
+- Autorrelação (funcionário que gerencia outro funcionário)
+- Agregação (relação entre funcionário, projeto e uso de equipamentos)
+- Normalização e integridade referencial
+
+---
+
+## 🧩 Diagrama MER (Mermaid)
 ```mermaid
 ---
 config:
