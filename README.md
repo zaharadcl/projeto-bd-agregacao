@@ -5,10 +5,19 @@ config:
   layout: elk
 ---
 erDiagram
-    FUNCIONARIO ||--o{ FUNCIONARIO : gerencia
-    FUNCIONARIO ||--o{ DEPENDENTE : possui
+    %% 1. Autorelacionamento (Hierarquia)
+    %% O funcionário pode ou não gerenciar outros (o{)
+    FUNCIONARIO ||--o{ FUNCIONARIO : "gerencia (id_gerente)"
+
+    %% 2. Dependência de Existência (Entidade Fraca)
+    %% Mudança para |{ indica que o dependente NÃO existe sem o funcionário
+    %% A PK de DEPENDENTE na teoria deveria ser composta por (id_funcionario, id_sequencial)
+    FUNCIONARIO ||--|{ DEPENDENTE : possui
+
+    %% 3. Agregação (Relação Funcionário + Projeto -> Equipamento)
+    %% ALOCACAO centraliza essa abstração
     FUNCIONARIO ||--o{ ALOCACAO : participa
-    PROJETO ||--o{ ALOCACAO : contém
+    PROJETO ||--o{ ALOCACAO : contem
     ALOCACAO ||--o{ USO_EQUIPAMENTO : registra
     EQUIPAMENTO ||--o{ USO_EQUIPAMENTO : utilizado
 
@@ -21,15 +30,15 @@ erDiagram
         string cargo
         decimal salario
         date data_admissao
-        int id_gerente FK
+        int id_gerente FK "Auto-relacionamento"
     }
 
     DEPENDENTE {
-        int id_dependente PK
+        int id_funcionario FK "PK Composta / Dep. Existência"
+        int id_sequencial PK
         string nome
         string parentesco
         date data_nascimento
-        int id_funcionario FK
     }
 
     PROJETO {
@@ -62,12 +71,13 @@ erDiagram
 
     USO_EQUIPAMENTO {
         int id_uso PK
-        int id_alocacao FK
+        int id_alocacao FK "Referência à Agregação"
         int id_equipamento FK
         date data_inicio_uso
         date data_fim_uso
         string observacao
     }
+
 ```
 
 ---
